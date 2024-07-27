@@ -1,10 +1,14 @@
 import telebot
-from config import TOKEN, SVIT_ID, ANTON_ID
+# from config import TOKEN, SVIT_ID, ANTON_ID
 import webbrowser
 from telebot import types
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(os.getenv('TOKEN'))
 
 
 @bot.message_handler(commands=['site'])
@@ -142,7 +146,7 @@ def process_size_step(
     size = message.text
     # Отправляем фото и данные в чат SVIT_ID и ANTON_ID
     bot.send_photo(
-        SVIT_ID,
+        os.getenv('SVIT_ID'),
         file_id,
         caption={f'Имя: {name}'
                  f'\nФaмилия: {surname}'
@@ -151,16 +155,16 @@ def process_size_step(
                  f'\nРазмер: {size}'
                  }
         )
-    bot.send_photo(
-        ANTON_ID,
-        file_id,
-        caption={f'Имя: {name}'
-                 f'\nФaмилия: {surname}'
-                 f'\nКонтaктная информация: {contact_info}'
-                 f'\nМатериал: {material}'
-                 f'\nРазмер: {size}'
-                 }
-        )
+    # bot.send_photo(
+    #     os.getenv('ANTON_ID'),
+    #     file_id,
+    #     caption={f'Имя: {name}'
+    #              f'\nФaмилия: {surname}'
+    #              f'\nКонтaктная информация: {contact_info}'
+    #              f'\nМатериал: {material}'
+    #              f'\nРазмер: {size}'
+    #              }
+    #     )
     bot.send_message(
         message.chat.id,
         'Ваше фото и данные были успешно отправлены.'
